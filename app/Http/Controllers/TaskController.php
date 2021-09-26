@@ -9,6 +9,16 @@ use App\Models\Task;
 class TaskController extends Controller
 {
     /**
+     * コンストラクタ
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+ 
+    /**
      * タスク一覧
      *
      * @param Request $request
@@ -16,7 +26,8 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $tasks = Task::orderBy('created_at', 'asc')->get();
+        //$tasks = Task::orderBy('created_at', 'asc')->get();
+        $tasks = $request->user()->tasks()->get();
         return view('tasks.index', [
             'tasks' => $tasks,
         ]);
@@ -35,9 +46,12 @@ class TaskController extends Controller
         ]);
  
         // タスク作成
-        Task::create([
-            'user_id' => 0,
-            'name' => $request->name
+        //Task::create([
+        //    'user_id' => 0,
+        //    'name' => $request->name
+        //]);
+        $request->user()->tasks()->create([
+            'name' => $request->name,
         ]);
  
         return redirect('/tasks');
@@ -52,6 +66,7 @@ class TaskController extends Controller
      */
     public function destroy(Request $request, Task $task)
     {
+        $this->authorize('destroy', $task);
         $task->delete();
         return redirect('/tasks');
     }

@@ -9,5 +9,13 @@ class Task extends Model
 {
     use HasFactory;
  
-    protected $fillable = ['user_id', 'name'];
+    protected $fillable = ['name'];
+ 
+    /**
+     * タスクを保持するユーザーの取得
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
