@@ -1,7 +1,7 @@
 <?php
-
+ 
 use Illuminate\Support\Facades\Route;
-
+ 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +12,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+ 
 Route::get('/', function () {
     return view('welcome');
 });
+ 
+Route::get('/tasks', [App\Http\Controllers\TaskController::class, 'index'])->name('tasks');
+Route::post('/task', [App\Http\Controllers\TaskController::class, 'store'])->name('task');
+Route::delete('/task/{task}', [App\Http\Controllers\TaskController::class, 'destroy'])->name('/task/{task}');
