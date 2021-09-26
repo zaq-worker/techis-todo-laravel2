@@ -5,17 +5,27 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
  
 use App\Models\Task;
+use App\Repositories\TaskRepository;
  
 class TaskController extends Controller
 {
+    /**
+     * タスクリポジトリ
+     *
+     * @var TaskRepository
+     */
+    protected $tasks;
+ 
     /**
      * コンストラクタ
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(TaskRepository $tasks)
     {
         $this->middleware('auth');
+ 
+        $this->tasks = $tasks;
     }
  
     /**
@@ -27,9 +37,9 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         //$tasks = Task::orderBy('created_at', 'asc')->get();
-        $tasks = $request->user()->tasks()->get();
+        //$tasks = $request->user()->tasks()->get();
         return view('tasks.index', [
-            'tasks' => $tasks,
+            'tasks' => $this->tasks->forUser($request->user()),
         ]);
     }
  
@@ -66,7 +76,6 @@ class TaskController extends Controller
      */
     public function destroy(Request $request, Task $task)
     {
-        $this->authorize('destroy', $task);
         $task->delete();
         return redirect('/tasks');
     }
