@@ -9,7 +9,7 @@
  
     <!-- 新タスクフォーム -->
     <form action="{{ url('task') }}" method="POST" class="form-horizontal">
-        {{ csrf_field() }}
+        @csrf
  
         <!-- タスク名 -->
         <div class="form-group">
@@ -59,7 +59,7 @@
                     <td>
                         <!-- TODO: 削除ボタン -->
                         <form action="{{ url('task/'.$task->id) }}" method="POST">
-                            {{ csrf_field() }}
+                            @csrf
                             {{ method_field('DELETE') }}
  
                             <button type="submit" id="delete-task-{{ $task->id }}" class="btn btn-danger">
