@@ -64,7 +64,7 @@ class TaskController extends Controller
             'name' => $request->name,
         ]);
  
-        return redirect('/task');
+        return redirect('/tasks');
     }
  
     /**
@@ -80,6 +80,6 @@ class TaskController extends Controller
         $this->authorize('destroy', $task);
 
         $task->delete();
-        return redirect('/task');
+        return redirect('/tasks');
     }
 }
